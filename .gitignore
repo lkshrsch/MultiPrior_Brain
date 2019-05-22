@@ -1,0 +1,6 @@
+#ignore nifti files that use space
+*.nii
+*.nii.gz
+
+#ignore saved models
+*.h5
