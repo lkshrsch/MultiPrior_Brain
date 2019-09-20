@@ -1,7 +1,34 @@
 # DeepPriors_package
 Repository for "Tissue segmentation with deep 3D networks and spatial priors" https://arxiv.org/abs/1905.10010
 
-To start using in a new environment, one must attach the correct paths to the data in CV_folds. Thats all (?)
+
+# Quick Tutorial
+
+Overview of files:
+
+# Train a model with data:
+
+run_Models_stroke.sh  -->  TRAIN_TEST.py 
+
+TRAIN_TEST.py --train_configFile
+
+train_configFile:
+- which model to train
+- which data to use
+- hyperparameter of the training session 
+
+
+run_SEGMENTATION.sh   --> SEGMENT.py
+
+SEGMENT.py --segment_configFile
+
+segment_configFile:
+- Which (trained) model to use
+- Which data to segment
+
+
+
+To start using in a new environment, one must attach the correct paths to the data in CV_folds. 
 
 ConfigFiles and all other scripts use paths relative to main scripts (TRAIN_TEST.py, SEGMENT.py, MAKE_MODEL.py). So one needs to 
 preserve the original package architecture.
@@ -21,7 +48,7 @@ suffix is ; (sed -i 's|$|;|g' run..sh)
 
 CHECK that parameters are correct for Azure.
 
-# iterations = 5
-# patches = 50000
+iterations = 5
+patches = 50000
 
 do not save segmentations
