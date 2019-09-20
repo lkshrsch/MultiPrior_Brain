@@ -1,0 +1,11 @@
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rGU038_Background1_Raw import  W534.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC020_NC020_Background2_Raw import  W515.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC022_NC022_Background1_Raw import  W325.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC024_Background8_Raw import  W519.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC010_NC010_Background1_Background 1_COPY.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rGU033_Background2_Raw import W451.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC016_NC016_Background1_Raw import  W0_COPY.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rbikson_manual_NEW_Background1_Dummy background name_rsc.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC025_Background1_Raw import W692.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rGU026_Background2_Raw import  W563.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rGU032_Background1_Raw import  W541.nii

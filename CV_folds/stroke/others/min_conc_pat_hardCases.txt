@@ -1,0 +1,8 @@
+/home/hirsch/Documents/projects/min_conc_pat/normalized/rSB081_MRI_rsc_rsc_stand_stand_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/normalized/rSG072_MRI_rsc_rsc_stand_stand_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/normalized/rCH198_2_MRI_rsc_rsc_stand_stand_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/normalized/rDA065_MRI_rsc_rsc_stand_stand_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/normalized/rDA098_3_MRI_rsc_rsc_stand_stand_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/normalized/rCR137_MRI_rsc_rsc_stand_stand_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/normalized/rMB038_MRI_rsc_rsc_stand_stand_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/normalized/rMC089_MRI_rsc_rsc_stand_stand_stand.nii

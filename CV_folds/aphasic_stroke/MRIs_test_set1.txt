@@ -1,0 +1,12 @@
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC014/NC014_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU008/GU008_Avg_for_dixon_big.nii
+/home/hirsch/Documents/projects/stroke_heads/Normal_heads/Normal_MRI/Parra.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC022/NC022_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC010/NC010_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU011/GU011_avg.nii
+/home/hirsch/Documents/projects/stroke_heads/Normal_heads/Normal_MRI/Bikson.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU021/rGU021_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU039/rGU039_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU020/rGU020_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC019/NC019_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC013/NC013_T1.nii

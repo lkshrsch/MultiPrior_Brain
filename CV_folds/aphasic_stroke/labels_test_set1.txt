@@ -1,0 +1,12 @@
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC014/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU008/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/Normal_heads/Normal_MRI/Parra_Label.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC022/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC010/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU011/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/Normal_heads/Normal_MRI/Bikson_Label.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU021/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU039/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU020/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC019/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC013/manualSeg.nii

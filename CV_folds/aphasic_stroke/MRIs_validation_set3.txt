@@ -1,0 +1,3 @@
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU019/rGU019_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC008/NC008_Padded_T1.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC024/NC024_T1.nii

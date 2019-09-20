@@ -1,0 +1,8 @@
+/home/userlks1/Data/ 
+/home/userlks1/Data/To inclue path of where datafiles are : 
+/home/userlks1/Data/
+/home/userlks1/Data/sed -i 's|^|/GLOBAL/PATH/TO/MRIs/|g' MRIs*
+/home/userlks1/Data/
+/home/userlks1/Data/sed -i 's|^|/GLOBAL/PATH/TO/labels/|g' labels*
+
+
