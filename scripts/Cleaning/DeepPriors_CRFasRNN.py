@@ -31,6 +31,9 @@ import keras.backend as K
 from keras.layers import Lambda
 from keras.layers import Multiply
 
+import sys
+sys.path.append('/home/hirsch/Documents/projects/brainSegmentation/crfasrnn_keras-master/src/')          
+from crfrnn_layer import CrfRnnLayer   
 
 def dice_coef(y_true, y_pred):
     smooth = 1e-9
@@ -135,7 +138,7 @@ def dice_coef_multilabel5(y_true, y_pred):
 def take_log(x, smooth = 1e-15):
     return K.log(x + smooth)
 
-class multiscale_CNN_TPM():
+class DeepPriors_CRFasRNN():
     
     def __init__(self, dpatch, output_classes, num_channels, L2, dropout, learning_rate, optimizer_decay, loss_function):
         
@@ -150,7 +153,11 @@ class multiscale_CNN_TPM():
         self.learning_rate = learning_rate
         self.optimizer_decay = optimizer_decay
         self.loss_function = loss_function
-
+        #self.w_initializer=w_initializer, # initialization of layer parameters? Needed here?
+        #self.w_regularizer=w_regularizer,
+        #self.b_initializer=b_initializer, # initialization of bias parameters? Needed here?
+        #self.b_regularizer=b_regularizer,
+        #self.acti_func=acti_func
     
     def createModel(self):
         '''Creates model architecture
@@ -277,29 +284,104 @@ class multiscale_CNN_TPM():
         x        = concatenate([x,tpm])  #  MIXING ONLY CHANNELS + CHANNELS. 
         
         # Skipping this bandfilter and going straigth to the softmax makes everything pointless (no nonlinearity besides softmax), and pushes performance to the floor.
-        x        = Conv3D(filters = self.fc_features[1], 
-                   kernel_size = (1,1,1), 
-                   #kernel_initializer=he_normal(seed=seed),
-                   kernel_initializer=Orthogonal(),
-                   kernel_regularizer=regularizers.l2(self.L2))(x)
-        x        = BatchNormalization()(x)
-        x        = PReLU()(x)
-        x        = Dropout(rate = self.dropout[1])(x)
-        
         x        = Conv3D(filters = self.output_classes, 
                    kernel_size = (1,1,1), 
                    #kernel_initializer=he_normal(seed=seed),
                    kernel_initializer=Orthogonal(),
                    kernel_regularizer=regularizers.l2(self.L2))(x)
         x        = BatchNormalization()(x)
-        x        = Activation(softmax)(x)
-        #x        = Dense(units = self.fc_features[2], activation = 'softmax', name = 'softmax')(x)
+        x        = PReLU()(x)
         
-        model     = Model(inputs=[mod1,tpm], outputs=x)
-        
-        #model     = Model(inputs = mod1, outputs = x)
-        #print_summary(model, positions=[.33, .6, .67,1])
-                  
+
+
+        img_output = Cropping3D(cropping = (((self.dpatch-9)/2,(self.dpatch-9)/2),((self.dpatch-9)/2,(self.dpatch-9)/2),((self.dpatch-9)/2,(self.dpatch-9)/2)), input_shape=(self.dpatch,self.dpatch,self.dpatch, self.num_channels))(mod1)
+
+
+        F = Lambda(lambda x, i: x[:,:,i,:], output_shape=(9,9,), name="lambda_layer")
+
+        F.arguments = {'i': 0}
+        y0 = CrfRnnLayer(image_dims=(9,9),
+                 num_classes=6,
+                 theta_alpha=160.,
+                 theta_beta=3.,
+                 theta_gamma=3.,
+                 num_iterations=4,
+                 name='crfrnn0')([F(x), F(img_output)])
+
+        F.arguments = {'i': 1}
+        y1 = CrfRnnLayer(image_dims=(9,9),
+                     num_classes=6,
+                     theta_alpha=160.,
+                     theta_beta=3.,
+                     theta_gamma=3.,
+                     num_iterations=4,
+                     name='crfrnn1')([F(x), F(img_output)])
+    
+        F.arguments = {'i': 2}          
+        y2 = CrfRnnLayer(image_dims=(9,9),
+                     num_classes=6,
+                     theta_alpha=160.,
+                     theta_beta=3.,
+                     theta_gamma=3.,
+                     num_iterations=4,
+                     name='crfrnn2')([F(x), F(img_output)])
+    
+        F.arguments = {'i': 3}          
+        y3 = CrfRnnLayer(image_dims=(9,9),
+                     num_classes=6,
+                     theta_alpha=160.,
+                     theta_beta=3.,
+                     theta_gamma=3.,
+                     num_iterations=4,
+                     name='crfrnn3')([F(x), F(img_output)])
+        F.arguments = {'i': 4}          
+        y4 = CrfRnnLayer(image_dims=(9,9),
+                     num_classes=6,
+                     theta_alpha=160.,
+                     theta_beta=3.,
+                     theta_gamma=3.,
+                     num_iterations=4,
+                     name='crfrnn4')([F(x), F(img_output)])
+        F.arguments = {'i': 5}          
+        y5 = CrfRnnLayer(image_dims=(9,9),
+                     num_classes=6,
+                     theta_alpha=160.,
+                     theta_beta=3.,
+                     theta_gamma=3.,
+                     num_iterations=4,
+                     name='crfrnn5')([F(x), F(img_output)])
+        F.arguments = {'i': 6}          
+        y6 = CrfRnnLayer(image_dims=(9,9),
+                     num_classes=6,
+                     theta_alpha=160.,
+                     theta_beta=3.,
+                     theta_gamma=3.,
+                     num_iterations=4,
+                     name='crfrnn6')([F(x), F(img_output)])
+        F.arguments = {'i': 7}          
+        y7 = CrfRnnLayer(image_dims=(9,9),
+                     num_classes=6,
+                     theta_alpha=160.,
+                     theta_beta=3.,
+                     theta_gamma=3.,
+                     num_iterations=4,
+                     name='crfrnn7')([F(x), F(img_output)])
+        F.arguments = {'i': 8}          
+        y8 = CrfRnnLayer(image_dims=(9,9),
+                     num_classes=6,
+                     theta_alpha=160.,
+                     theta_beta=3.,
+                     theta_gamma=3.,
+                     num_iterations=4,
+                     name='crfrnn8')([F(x), F(img_output)])
+    
+        from keras.backend import stack
+    
+        S = Lambda(lambda x: stack(x,axis=3), output_shape=(9,9,9,6))
+        output = S([y0,y1,y2,y3,y4,y5,y6,y7,y8])
+
+        model     = Model(inputs=[mod1,tpm], outputs=output)
+                
         if self.loss_function == 'Multinomial':
             model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=self.learning_rate), metrics=[dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3, dice_coef_multilabel4,dice_coef_multilabel5])
         elif self.loss_function == 'Dice2':

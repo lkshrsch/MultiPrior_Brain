@@ -150,7 +150,11 @@ class multiscale_CNN_TPM():
         self.learning_rate = learning_rate
         self.optimizer_decay = optimizer_decay
         self.loss_function = loss_function
-
+        #self.w_initializer=w_initializer, # initialization of layer parameters? Needed here?
+        #self.w_regularizer=w_regularizer,
+        #self.b_initializer=b_initializer, # initialization of bias parameters? Needed here?
+        #self.b_regularizer=b_regularizer,
+        #self.acti_func=acti_func
     
     def createModel(self):
         '''Creates model architecture
