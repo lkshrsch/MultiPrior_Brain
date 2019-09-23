@@ -23,23 +23,20 @@ def movingAverageConv(a, window_size=1) :
 def makeFiles(argv):
     file = ''
     w = 1
-    v = 1
     save = False
     try:
-		opts, args = getopt.getopt(argv,"hsf:m:v:",["file=", "movingAverage=", "movingAverageVal="])
+		opts, args = getopt.getopt(argv,"hsf:m:",["file=", "movingAverage="])
     except getopt.GetoptError:
-		print('plotLossFunctionKeras.py -f <train log full file address: /home/...> -m <moving average> -v <moving average val> -s <save>')
+		print('plotLossFunctionKeras.py -f <train log full file address: /home/...> -m <moving average>')
 		sys.exit(2)
     for opt, arg in opts:
 		if opt == '-h':
-			print('plotLossFunctionKeras.py -f <train log full file address: /home/...> -m <moving average> -v <moving average val> -s <save>')
+			print('plotLossFunctionKeras.py -f <train log full file address : /home/...> -m <moving average>')
 			sys.exit()
 		elif opt in ("-f","--file"):
 			file = str(arg)
 		elif opt in ("-m","--movingAverage"):
 			w = int(arg)   
-		elif opt in ("-v","--movingAverageVal"):
-			v = int(arg)   
 		elif opt in ("-s"):
 			save = True   
 
@@ -209,87 +206,57 @@ def makeFiles(argv):
     Tdice5 = movingAverageConv(Tdice5, window_size = w)
     Tdice6 = movingAverageConv(Tdice6, window_size = w)
     Tdice7 = movingAverageConv(Tdice7, window_size = w)
-
-    Val = movingAverageConv(Val, window_size = v)
-    Valdice1 = movingAverageConv(Valdice1, window_size = v)
-    Valdice2 = movingAverageConv(Valdice2, window_size = v)
-    Valdice3 = movingAverageConv(Valdice3, window_size = v)
-    Valdice4 = movingAverageConv(Valdice4, window_size = v)
-    Valdice5 = movingAverageConv(Valdice5, window_size = v)
-    Valdice6 = movingAverageConv(Valdice6, window_size = v)
+    #Val = movingAverageConv(Val, window_size = w)
+    #Valdice1 = movingAverageConv(Valdice1, window_size = w)
+    #Valdice2 = movingAverageConv(Valdice2, window_size = w)
+    #Valdice3 = movingAverageConv(Valdice3, window_size = w)
+    #Valdice4 = movingAverageConv(Valdice4, window_size = w)
+    #Valdice5 = movingAverageConv(Valdice5, window_size = w)
+    #Valdice6 = movingAverageConv(Valdice6, window_size = w)
 
     #plt.clf()
 
+    plt.figure(figsize=(12,12))
     
-    
-    if len(Valdice1) == 0:
-            plt.figure(figsize=(4,8))
-	    ax1 = plt.subplot(311)
-	    plt.plot(range(len(train)),train,'k-')
-	    plt.title('Training Data - moving average {}'.format(w),)
-	    plt.axis('tight')
-	    plt.legend(('Training Loss',))
+    ax1 = plt.subplot(321)
+    plt.plot(range(len(train)),train,'k-')
+    plt.title('Training Data - moving average {}'.format(w),)
+    plt.axis('tight')
+    plt.legend(('Training Loss',))
 
-	    ax3 = plt.subplot(312)
-	    plt.plot(range(len(Tdice1)),Tdice1,'k-')
-	    plt.plot(range(len(Tdice2)),Tdice2,'k--')
-	    plt.plot(range(len(Tdice3)),Tdice3,'g-')
-	    plt.plot(range(len(Tdice4)),Tdice4,color='yellow')
-	    plt.plot(range(len(Tdice5)),Tdice5,color='orange')
-	    plt.plot(range(len(Tdice6)),Tdice6,'r-')
-	    plt.plot(range(len(Tdice7)),Tdice7,'b-')
-	    plt.legend(('Air','Cav', 'GM','WM','CSF','Bone','Skin'), loc='lower center')
+    ax2 = plt.subplot(322, sharey = ax1)
 
 
-	    ax5 = plt.subplot(313)#, sharey=ax3)
-	    #plt.ylim([np.min(DSC)-0.01,np.max(DSC)+0.01])
-	    plt.plot(range(2,len(DSC)+2),DSC,'b-o')
-	    plt.legend(('Full Segmentation Dice',), loc='lower right')
-	    plt.xlabel('Epochs')
+    plt.plot(np.linspace(0,len(Val),len(train),endpoint=True), train,'b--')
+    plt.plot(range(0,len(Val)),Val,'k-')
+    plt.legend(('Validation Loss','Training Loss',))
+    plt.title('Test Data',)
 
+    ax3 = plt.subplot(323)
+    plt.plot(range(len(Tdice1)),Tdice1,'k-')
+    plt.plot(range(len(Tdice2)),Tdice2,'k--')
+    plt.plot(range(len(Tdice3)),Tdice3,'g-')
+    plt.plot(range(len(Tdice4)),Tdice4,color='yellow')
+    plt.plot(range(len(Tdice5)),Tdice5,color='orange')
+    plt.plot(range(len(Tdice6)),Tdice6,'r-')
+    plt.plot(range(len(Tdice7)),Tdice7,'b-')
+    plt.legend(('Air','Cav', 'GM','WM','CSF','Bone','Skin'), loc='lower center')
 
+    ax4 = plt.subplot(324, sharey = ax3)
+    plt.plot(range(0,len(Valdice1)),Valdice1,'k-')
+    plt.plot(range(0,len(Valdice2)),Valdice2,'k--')
+    plt.plot(range(0,len(Valdice3)),Valdice3,'g-')
+    plt.plot(range(0,len(Valdice4)),Valdice4,color='yellow')
+    plt.plot(range(0,len(Valdice5)),Valdice5,color='orange')
+    plt.plot(range(0,len(Valdice6)),Valdice6,'r-')
+    plt.plot(range(0,len(Valdice7)),Valdice7,'b-')
+    plt.legend(('Air','Cav', 'GM','WM','CSF','Bone','Skin'), loc='lower center')
 
-    else:
-	    plt.figure(figsize=(12,12))
-	    ax1 = plt.subplot(321)
-	    plt.plot(range(len(train)),train,'k-')
-	    plt.title('Training Data - moving average {}'.format(w),)
-	    plt.axis('tight')
-	    plt.legend(('Training Loss',))
-
-	    ax2 = plt.subplot(322, sharey = ax1)
-
-
-	    plt.plot(np.linspace(0,len(Val),len(train),endpoint=True), train,'b--')
-	    plt.plot(range(0,len(Val)),Val,'k-')
-	    plt.legend(('Training Loss','Validation Loss',))
-	    plt.title('Validation Data- moving average {}'.format(v),)
-
-	    ax3 = plt.subplot(323)
-	    plt.plot(range(len(Tdice1)),Tdice1,'k-')
-	    plt.plot(range(len(Tdice2)),Tdice2,'k--')
-	    plt.plot(range(len(Tdice3)),Tdice3,'g-')
-	    plt.plot(range(len(Tdice4)),Tdice4,color='yellow')
-	    plt.plot(range(len(Tdice5)),Tdice5,color='orange')
-	    plt.plot(range(len(Tdice6)),Tdice6,'r-')
-	    plt.plot(range(len(Tdice7)),Tdice7,'b-')
-	    plt.legend(('Air','Cav', 'GM','WM','CSF','Bone','Skin'), loc='lower center')
-
-	    ax4 = plt.subplot(324, sharey = ax3)
-	    plt.plot(range(0,len(Valdice1)),Valdice1,'k-')
-	    plt.plot(range(0,len(Valdice2)),Valdice2,'k--')
-	    plt.plot(range(0,len(Valdice3)),Valdice3,'g-')
-	    plt.plot(range(0,len(Valdice4)),Valdice4,color='yellow')
-	    plt.plot(range(0,len(Valdice5)),Valdice5,color='orange')
-	    plt.plot(range(0,len(Valdice6)),Valdice6,'r-')
-	    plt.plot(range(0,len(Valdice7)),Valdice7,'b-')
-	    plt.legend(('Air','Cav', 'GM','WM','CSF','Bone','Skin'), loc='lower center')
-
-	    ax5 = plt.subplot(326)#, sharey=ax4)
-	    plt.ylim([0.6,1])
-	    plt.plot(range(len(DSC)),DSC,'b-o')
-	    plt.legend(('Full Segmentation Dice',), loc='lower right')
-	    plt.xlabel('Epochs')
+    ax5 = plt.subplot(326)#, sharey=ax4)
+    plt.ylim([0.5,0.9])
+    plt.plot(range(len(DSC)),DSC,'b-o')
+    plt.legend(('Full Segmentation Dice',), loc='lower right')
+    plt.xlabel('Epochs')
     
     if save:
         out = '/'.join(file.split('/')[:-1])

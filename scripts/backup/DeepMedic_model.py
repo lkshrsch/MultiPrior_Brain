@@ -1,11 +1,10 @@
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 """
-Created on Thu May  3 17:49:36 2018
+Created on Fri Dec  8 10:26:01 2017
 
 @author: lukas
 """
-
 from keras.models import Model
 from keras.layers.core import Dense, Activation, Dropout
 from keras.layers.convolutional import Conv3D
@@ -24,16 +23,12 @@ from keras.layers.advanced_activations import PReLU
 from keras.utils import print_summary
 from keras import regularizers
 from keras.optimizers import RMSprop
+import keras.backend as K
 from keras.optimizers import Adam
 import numpy as np
-from keras.activations import softmax
-import keras.backend as K
-from keras.layers import Lambda
-from keras.layers import Multiply
-
 
 def dice_coef(y_true, y_pred):
-    smooth = 1e-9
+    smooth = 1e-6
     y_true_f = K.flatten(y_true)
     y_pred_f = K.flatten(y_pred)
     intersection = K.sum(y_true_f * y_pred_f)
@@ -50,46 +45,20 @@ def dice_coef_multilabel6(y_true, y_pred, numLabels=6):
     for index in range(numLabels):
         dice -= dice_coef(y_true[:,:,:,:,index], y_pred[:,:,:,:,index])
     return numLabels + dice
-
 def w_dice_coef(y_true, y_pred, PENALTY):
-    smooth = 1e-9
+    smooth = 1e-6
     y_true_f = K.flatten(y_true)
     y_pred_f = K.flatten(y_pred)
     intersection = K.sum(y_true_f * y_pred_f) * PENALTY
     return (2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
 
-def w_dice_coef_multilabel2(y_true, y_pred, numLabels=2):
-                                    
-    PENALTY = np.array([[ 1,    0],
-                        [-1,  1]], dtype='float32')
-                          
-    #PENALTY[PENALTY < 0] = -5                      
-                             
-    dice = []
-    for index in range(numLabels):
-        dice_class = []
-        for j in range(numLabels):
-            wDice = w_dice_coef(y_true[:,:,:,:,index], y_pred[:,:,:,:,j], PENALTY[index,j])
-            dice_class.append(wDice)
-        dice.append(K.sum(dice_class)) 
-        
-    final_dice = K.sum(dice)
-    return numLabels - final_dice
-
 def w_dice_coef_multilabel6(y_true, y_pred, numLabels=6):
                                     
-    #PENALTY = np.array([   [ 1, -1, -1, -1,  0,  0],
-    #                       [-1,  1,  0,  0, -1, -1],
-    #                       [-1,  0,  1,  0, -1, -1],
-    #                       [-1,  0,  0,  1,  0, -1],
-    #                       [ 0, -1, -1,  0,  1,  0],
-    #                       [ 0, -1, -1, -1,  0,  1]], dtype='float32')
-
     PENALTY = np.array([   [ 1, -1, -1, -1,  0,  0],
                            [-1,  1,  0,  0, -1, -1],
                            [-1,  0,  1,  0, -1, -1],
-                           [-1,  0,  0,  1, -1, -1],
-                           [ 0, -1, -1, -1,  1,  0],
+                           [-1,  0,  0,  1,  0, -1],
+                           [ 0, -1, -1,  0,  1,  0],
                            [ 0, -1, -1, -1,  0,  1]], dtype='float32')
                           
     PENALTY[PENALTY < 0] = -1                   
@@ -132,16 +101,13 @@ def dice_coef_multilabel5(y_true, y_pred):
     dice = dice_coef(y_true[:,:,:,:,index], y_pred[:,:,:,:,index])
     return dice
 
-def take_log(x, smooth = 1e-15):
-    return K.log(x + smooth)
-
-class multiscale_CNN_TPM():
+class DeepMedic():
     
     def __init__(self, dpatch, output_classes, num_channels, L2, dropout, learning_rate, optimizer_decay, loss_function):
         
         self.dpatch = dpatch
         self.output_classes = output_classes
-        self.conv_features = [30, 30, 40, 40, 40, 40, 50, 50]
+        self.conv_features = [30, 30, 40, 40, 40, 40, 50, 50] #[50, 50, 50, 50, 50, 100, 100, 100]
         self.fc_features = [150,150, output_classes]
         self.d_factor = 3  # downsampling factor = stride in downsampling pathway
         self.num_channels = num_channels
@@ -150,7 +116,11 @@ class multiscale_CNN_TPM():
         self.learning_rate = learning_rate
         self.optimizer_decay = optimizer_decay
         self.loss_function = loss_function
-
+        #self.w_initializer=w_initializer, # initialization of layer parameters? Needed here?
+        #self.w_regularizer=w_regularizer,
+        #self.b_initializer=b_initializer, # initialization of bias parameters? Needed here?
+        #self.b_regularizer=b_regularizer,
+        #self.acti_func=acti_func
     
     def createModel(self):
         '''Creates model architecture
@@ -237,6 +207,8 @@ class multiscale_CNN_TPM():
         x        = Dense(units = self.fc_features[2], activation = 'softmax', name = 'softmax')(x)'''
         
         #   Fully convolutional variant
+
+        #tpm = Input((9,9,9,6))        
         
         #x        = Dropout(rate = self.dropout[0])(x)
         x        = Conv3D(filters = self.fc_features[0], 
@@ -248,9 +220,7 @@ class multiscale_CNN_TPM():
         #x        = Activation('relu')(x)
         x        = PReLU()(x)
         #x        = BatchNormalization()(x)
-        x        = Dropout(rate = self.dropout[0])(x)
-        
-        
+        #x        = Dropout(rate = self.dropout[0])(x)
         x        = Conv3D(filters = self.fc_features[1], 
                            kernel_size = (1,1,1), 
                            #kernel_initializer=he_normal(seed=seed),
@@ -260,46 +230,16 @@ class multiscale_CNN_TPM():
         #x        = Activation('relu')(x)
         x        = PReLU()(x)
         #x        = BatchNormalization()(x)
-        x        = Dropout(rate = self.dropout[1])(x)
+        #x        = Dropout(rate = self.dropout[1])(x)
         #x        = Flatten()(x)
-              
-        x        = Conv3D(filters = self.output_classes, 
-                           kernel_size = (1,1,1), 
-                           #kernel_initializer=he_normal(seed=seed),
-                           kernel_initializer=Orthogonal(),
-                           kernel_regularizer=regularizers.l2(self.L2))(x)
-        #x        = BatchNormalization()(x)
+        x        = Dense(units = self.fc_features[2], activation = 'softmax', name = 'softmax')(x)
         
-        # NO ACTIVATION (LINEAR ACTIVATION), THIS IS JUST THE LAST LAYER BEFORE SOFTMAX. hERE WE GET USUAL LOGITS.
-        
-        tpm = Input((9,9,9,6))
-
-        x        = concatenate([x,tpm])  #  MIXING ONLY CHANNELS + CHANNELS. 
-        
-        # Skipping this bandfilter and going straigth to the softmax makes everything pointless (no nonlinearity besides softmax), and pushes performance to the floor.
-        x        = Conv3D(filters = self.fc_features[1], 
-                   kernel_size = (1,1,1), 
-                   #kernel_initializer=he_normal(seed=seed),
-                   kernel_initializer=Orthogonal(),
-                   kernel_regularizer=regularizers.l2(self.L2))(x)
-        x        = BatchNormalization()(x)
-        x        = PReLU()(x)
-        x        = Dropout(rate = self.dropout[1])(x)
-        
-        x        = Conv3D(filters = self.output_classes, 
-                   kernel_size = (1,1,1), 
-                   #kernel_initializer=he_normal(seed=seed),
-                   kernel_initializer=Orthogonal(),
-                   kernel_regularizer=regularizers.l2(self.L2))(x)
-        x        = BatchNormalization()(x)
-        x        = Activation(softmax)(x)
-        #x        = Dense(units = self.fc_features[2], activation = 'softmax', name = 'softmax')(x)
-        
-        model     = Model(inputs=[mod1,tpm], outputs=x)
-        
-        #model     = Model(inputs = mod1, outputs = x)
+        model     = Model(inputs = [mod1], outputs = x)
         #print_summary(model, positions=[.33, .6, .67,1])
                   
+        #rmsprop = RMSprop(lr=self.learning_rate, rho=0.9, epsilon=1e-8, decay=self.optimizer_decay)
+        
+        
         if self.loss_function == 'Multinomial':
             model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=self.learning_rate), metrics=[dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3, dice_coef_multilabel4,dice_coef_multilabel5])
         elif self.loss_function == 'Dice2':

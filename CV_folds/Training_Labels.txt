@@ -1,0 +1,3 @@
+/Path/To/Label_1.nii
+/Path/To/Label_2.nii
+/Path/To/Label_3.nii

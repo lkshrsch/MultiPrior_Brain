@@ -24,7 +24,7 @@ if __name__ == "__main__":
     workingDir = os.getcwd()
 
     from scripts.lib import segment
-    configFile = sys.argv[1:][0]
+    configFile = sys.argv[1:][0]#'/home/hirsch/Documents/projects/brainSegmentation/multiScale_TPM/configFile.py'
     segment(configFile, workingDir)
 
 

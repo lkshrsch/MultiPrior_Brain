@@ -1,0 +1,3 @@
+/Path/To/MRI_1.nii
+/Path/To/MRI_2.nii
+/Path/To/MRI_3.nii

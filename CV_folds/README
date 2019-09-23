@@ -1,8 +1,0 @@
-4-Fold CV
-
-Each fold (0,1,2,3) has a train partition and a test partition.
-The train partition consists of a train set and a validation set.
-The model is trained on the train set, and performance during training checked on the validation set.
-The best model, in reference to the validation partition, is saved. This is then tested on the test set. After training is DONE.
-
-

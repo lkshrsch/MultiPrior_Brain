@@ -33,7 +33,7 @@ def dice_coef(y_true, y_pred):
     y_true_f = K.flatten(y_true)
     y_pred_f = K.flatten(y_pred)
     intersection = K.sum(y_true_f * y_pred_f)
-    return (2. * intersection + smooth) / (K.sum(y_true_f) + K.sum(y_pred_f) + smooth)
+    return (2. * intersection + smooth) / (K.sum(y_true_f**2) + K.sum(y_pred_f**2) + smooth)
 
 def Generalised_dice_coef_multilabel2(y_true, y_pred, numLabels=2):
     dice=0
@@ -79,13 +79,6 @@ def w_dice_coef_multilabel2(y_true, y_pred, numLabels=2):
     return numLabels - final_dice
 
 def w_dice_coef_multilabel6(y_true, y_pred, numLabels=6):
-                                    
-    #PENALTY = np.array([   [ 1, -1, -1, -1,  0,  0],
-    #                       [-1,  1,  0,  0, -1, -1],
-    #                       [-1,  0,  1,  0, -1, -1],
-    #                       [-1,  0,  0,  1,  0, -1],
-    #                       [ 0, -1, -1,  0,  1,  0],
-    #                       [ 0, -1, -1, -1,  0,  1]], dtype='float32')
 
     PENALTY = np.array([   [ 1, -1, -1, -1,  0,  0],
                            [-1,  1,  0,  0, -1, -1],
@@ -140,67 +133,52 @@ def dice_coef_multilabel6(y_true, y_pred):
 
     
 
-class DeepMedic():
+class MultiPriors_Model():
     
     def __init__(self, output_classes, num_channels, L2, dropout, learning_rate, optimizer_decay, loss_function):
         
         self.output_classes = output_classes
-        self.conv_features = [30, 30, 40, 40, 40, 40, 50, 50] #[50, 50, 50, 50, 50, 100, 100, 100]
-        self.fc_features = [150,150, output_classes]
-        self.d_factor = 3  # downsampling factor = stride in downsampling pathway
+        self.conv_features = [30, 30, 30, 30, 50, 50, 50, 50]   
+        self.fc_features = [150,200]
         self.num_channels = num_channels
         self.L2 = L2
         self.dropout = dropout
         self.learning_rate = learning_rate
         self.optimizer_decay = optimizer_decay
         self.loss_function = loss_function
-        #self.w_initializer=w_initializer, # initialization of layer parameters? Needed here?
-        #self.w_regularizer=w_regularizer,
-        #self.b_initializer=b_initializer, # initialization of bias parameters? Needed here?
-        #self.b_regularizer=b_regularizer,
-        #self.acti_func=acti_func
-    
+
     def createModel(self):
         '''Creates model architecture
         Input: Data input dimensions, eventually architecture specifications parsed from a config file? (activations, costFunction, hyperparameters (nr layers), dropout....)
         Output: Keras Model'''
     
-        #seed = 1337
-    
-        #mod1      = Input((self.dpatch,self.dpatch,self.dpatch, self.num_channels))
-        mod1      = Input((None,None,None, self.num_channels))
-        
+        highRes      = Input((None, None, None, self.num_channels))    # Dim = 25^3 (from a 57^3 cube, cropped 16 per side)
+        lowRes       = Input((None, None, None, self.num_channels))    # Dim = 19^3 (from a 57^3 cube downsampled by three)
         #############   Normal pathway   ##################  
-        
-        # reduces 57 into 9 ( - 48)        
-        
-        x1        = Cropping3D(cropping = ((16,16),(16,16),(16,16)), input_shape=(None,None,None, self.num_channels))(mod1)
 
-        # 25  , to 9  =  -16
+        # This input is now already cropped     = -32 
+        x1 = highRes        
         
-        for feature in self.conv_features:  
-            x1        = Conv3D(filters = feature, 
+        # 25 --> 9  =  -16
+        for kernels in self.conv_features:   
+            x1        = Conv3D(filters = kernels, 
                                kernel_size = (3,3,3), 
-                               #kernel_initializer=he_normal(seed=seed),
-                               kernel_initializer=he_normal(),
+                               kernel_initializer=Orthogonal(),
                                kernel_regularizer=regularizers.l2(self.L2))(x1)
             x1        = LeakyReLU()(x1)
             x1        = BatchNormalization()(x1)   
-
             
         #############   Downsampled pathway   ##################   
-        #x2        = MaxPooling3D(pool_size=(self.d_factor,self.d_factor,self.d_factor), padding="same")(mod1)
-        
-        x2        = AveragePooling3D(pool_size=(self.d_factor,self.d_factor,self.d_factor), padding="same")(mod1)
-        
-        # Reduces into by 1/3  = 19, then down to 3 : -16        
-        
-        
-        for feature in self.conv_features:    
-            x2        = Conv3D(filters = feature, 
+
+        # This input is already downsampled       = /3  
+        x2 = lowRes        
+
+        # in total (x/3 - 16)*3  =  -66
+        # -22
+        for kernels in self.conv_features:   
+            x2        = Conv3D(filters = kernels, 
                                kernel_size = (3,3,3), 
-                               #kernel_initializer=he_normal(seed=seed),
-                               kernel_initializer=he_normal(),
+                               kernel_initializer=Orthogonal(),
                                kernel_regularizer=regularizers.l2(self.L2))(x2)
             x2        = LeakyReLU()(x2)
             x2        = BatchNormalization()(x2)   
@@ -208,80 +186,26 @@ class DeepMedic():
         x2        = UpSampling3D(size=(3,3,3))(x2)
         
         #############   Fully connected layers   ################## 
+
+        #tpm = Input((None,None,None,6))
         
-        x        = concatenate([x1,x2])
+        x        = concatenate([x1, x2])#, tpm])
 
-
-        x        = Conv3D(filters = self.fc_features[0], 
-                           kernel_size = (1,1,1), 
-                           #kernel_initializer=he_normal(seed=seed),
-                           kernel_initializer=Orthogonal(),
-                           kernel_regularizer=regularizers.l2(self.L2))(x)
-        x        = LeakyReLU()(x)
-        x        = BatchNormalization()(x)
-
-        
-        x        = Conv3D(filters = self.fc_features[1], 
-                           kernel_size = (1,1,1), 
-                           #kernel_initializer=he_normal(seed=seed),
-                           kernel_initializer=Orthogonal(),
-                           kernel_regularizer=regularizers.l2(self.L2))(x)
-        x        = LeakyReLU()(x)
-        x        = BatchNormalization()(x)
-
-              
-        x        = Conv3D(filters = self.output_classes, 
-                           kernel_size = (1,1,1), 
-                           #kernel_initializer=he_normal(seed=seed),
-                           kernel_initializer=Orthogonal(),
-                           kernel_regularizer=regularizers.l2(self.L2))(x)
-        #x        = BatchNormalization()(x)
-        
-        # NO ACTIVATION (LINEAR ACTIVATION), THIS IS JUST THE LAST LAYER BEFORE SOFTMAX. hERE WE GET USUAL LOGITS.
-        #tpm = Input((9,9,9,4))
-
-        tpm = Input((None,None,None,5))
-
-        x4        = Cropping3D(cropping = ((24,24),(24,24),(24,24)), input_shape=(None, None, None, self.num_channels))(mod1)
-        x        = concatenate([x,tpm,x4])  #  MIXING ONLY CHANNELS + CHANNELS. 
-        
-        # Skipping this bandfilter and going straigth to the softmax makes everything pointless (no nonlinearity besides softmax), and pushes performance to the floor.
-        x        = Conv3D(filters = self.fc_features[1], 
-                   kernel_size = (1,1,1), 
-                   #kernel_initializer=he_normal(seed=seed),
-                   kernel_initializer=Orthogonal(),
-                   kernel_regularizer=regularizers.l2(self.L2))(x)
-        x        = LeakyReLU()(x)
-        x        = BatchNormalization()(x)
-        #x        = PReLU()(x)
-        x        = Dropout(rate = self.dropout[1])(x)
-
-        x        = Conv3D(filters = self.fc_features[1], 
-                   kernel_size = (1,1,1), 
-                   #kernel_initializer=he_normal(seed=seed),
-                   kernel_initializer=Orthogonal(),
-                   kernel_regularizer=regularizers.l2(self.L2))(x)
-        #x        = BatchNormalization()(x)
-        x        = LeakyReLU()(x)
-        #x        = PReLU()(x)
-        x        = Dropout(rate = self.dropout[1])(x)
-
-        #x        = concatenate([x,tpm,x4])
+        for feature in self.fc_features:    
+            x        = Conv3D(filters = feature, 
+                               kernel_size = (1,1,1), 
+                               kernel_initializer=Orthogonal(),
+                               kernel_regularizer=regularizers.l2(self.L2))(x)
+            x        = LeakyReLU()(x)
+            x        = BatchNormalization()(x)   
 
         x        = Conv3D(filters = self.output_classes, 
                    kernel_size = (1,1,1), 
-                   #kernel_initializer=he_normal(seed=seed),
                    kernel_initializer=Orthogonal(),
                    kernel_regularizer=regularizers.l2(self.L2))(x)
-        #x        = BatchNormalization()(x)
         x        = Activation(softmax)(x)
-        #x        = Dense(units = self.fc_features[2], activation = 'softmax', name = 'softmax')(x)
         
-        model     = Model(inputs=[mod1,tpm], outputs=x)
-        #print_summary(model, positions=[.33, .6, .67,1])
-                  
-        #rmsprop = RMSprop(lr=self.learning_rate, rho=0.9, epsilon=1e-8, decay=self.optimizer_decay)
-        
+        model     = Model(inputs=[highRes, lowRes], outputs=x)       
         
         if self.loss_function == 'Multinomial':
             model.compile(loss='categorical_crossentropy', optimizer=Adam(lr=self.learning_rate), metrics=[dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3, dice_coef_multilabel4,dice_coef_multilabel5,dice_coef_multilabel6])
@@ -296,3 +220,23 @@ class DeepMedic():
         elif self.loss_function == 'Dice7':
             model.compile(loss=Generalised_dice_coef_multilabel7, optimizer=Adam(lr=self.learning_rate), metrics=[dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3, dice_coef_multilabel4,dice_coef_multilabel5,dice_coef_multilabel6 ])
         return model
+
+
+#dm = MultiPriors_Model(7, 1, 0.001, [0], 0.01, 0, 'Dice7' )
+#model = dm.createModel()            
+#model.summary()  
+#from keras.utils import plot_model
+#plot_model(model, to_file='/home/hirsch/Documents/projects/brainSegmentation/DeepPriors/multiscale_shapes.png', show_shapes=True)    
+#
+#
+#X = np.random.randn(1,51,51,51,1)
+#TPM = np.random.randn(1,3,3,3,6)
+#
+#from skimage.transform import resize
+#lowRes = resize(X, output_shape=[X.shape[0], X.shape[1]/3, X.shape[2]/3, X.shape[3]/3, X.shape[4]], anti_aliasing=True)
+#lowRes.shape
+#highRes = X[:,16:-16,16:-16,16:-16,:]
+#highRes.shape
+#yhat = model.predict([highRes,lowRes, TPM])
+#yhat.shape
+
