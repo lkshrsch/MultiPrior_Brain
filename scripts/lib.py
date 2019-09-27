@@ -977,6 +977,9 @@ def train_test_model(configFile, workingDir):
     sys.path.append(path)
     cfg = __import__(configFileName)
     
+    if not os.path.exists(workingDir + '/training_sessions'):
+	os.mkdir(workingDir + '/training_sessions')
+  
     if len(cfg.TPM_channel) > 0:
       cfg.TPM_channel = workingDir + cfg.TPM_channel
     if len(cfg.train_TPM_channel) > 0:
