@@ -1,0 +1,4 @@
+/home/hirsch/Documents/projects/min_conc_pat/FirstBatch/rrAA121_2_int8_padded_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/FirstBatch/rrCL084_3_int8_padded_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/FirstBatch/rrCR137_int8_padded_stand.nii
+/home/hirsch/Documents/projects/min_conc_pat/FirstBatch/rrMC089_int8_padded_stand.nii

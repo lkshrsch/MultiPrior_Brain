@@ -1,0 +1,6 @@
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU011/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU015/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU016/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU017/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU032/manualSeg.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC027/manualSeg.nii

@@ -68,6 +68,7 @@ samplingMethod_val = 0
 quick_segmentation = True
 dice_compare = True
 n_fullSegmentations = 3
+softmax_output = False
 #list_subjects_fullSegmentation = []
 epochs_for_fullSegmentation = [0,1,5,10,99]
 size_test_minibatches = 1

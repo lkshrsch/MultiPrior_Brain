@@ -1,0 +1,4 @@
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC004_NC004_Background1_Background 1_COPY.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rGU003_GU003_Background1_Background 3_COPY.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rGU012_GU012_Background1_Background 2_COPY.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC015_NC015_Background2_Raw import  W0_COPY.nii

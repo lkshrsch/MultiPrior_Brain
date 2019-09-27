@@ -1,0 +1,4 @@
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/LABEL/rGU029_LABEL.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/LABEL/rNC018_LABEL.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/LABEL/rGU030_LABEL.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/LABEL/rNC023_LABEL.nii

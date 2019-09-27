@@ -1,0 +1,4 @@
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rGU029_Background2_Raw import  W519.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC018_NC018_Background2_Background 1_COPY.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rGU030_Background2_Raw import  W586.nii
+/home/hirsch/Documents/projects/stroke_heads/MODEL_INPUT/MRI/rNC023_NC023_Background2_Raw import  W724.nii

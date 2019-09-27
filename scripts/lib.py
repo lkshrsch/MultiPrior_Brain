@@ -1308,7 +1308,10 @@ def segment(configFile,workingDir):
     sys.path.append(path)
     cfg = __import__(configFileName)
     softmax_output = cfg.softmax_output
+<<<<<<< HEAD
     list_subjects_fullSegmentation = cfg.list_subjects_fullSegmentation 
+=======
+>>>>>>> 4a47ea40df3219a4cce35bc22a6825ad13ac5dfd
 
     start_epoch = int(cfg.path_to_model.split('.')[-2][cfg.path_to_model.split('.')[-2].find('epoch') + 5 : ]) + 1
         

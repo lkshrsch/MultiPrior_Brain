@@ -1,0 +1,12 @@
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC027/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU041/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU012/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU029/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC021/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC033/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU030/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/Normal_heads/Normal_MRI/Andy_indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC020/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU019/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC008/indiTPM.nii
+/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC024/indiTPM.nii
