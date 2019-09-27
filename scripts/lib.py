@@ -965,9 +965,6 @@ def make_model(model_configFile):
 
 ############################## RUNNING TRAINING AND SEGMENTATION FUNCTIONS ###########################################
 
-#configFile = '/home/hirsch/Documents/projects/brainSegmentation/DeepPriors/configFiles/configFiles_stroke/configFile_Aphasic_Stroke_MultiPriors_noDownsampling.py'
-#workingDir = '/home/hirsch/Documents/projects/brainSegmentation/DeepPriors/'
-
 def train_test_model(configFile, workingDir):
     # import configuration file and create working environment
     print(configFile)
@@ -976,7 +973,7 @@ def train_test_model(configFile, workingDir):
     configFileName = configFile.split('/')[-1][:-3]   
     sys.path.append(path)
     cfg = __import__(configFileName)
-    
+    softmax_output = cfg.softmax_output
     if not os.path.exists(workingDir + '/training_sessions'):
 	os.mkdir(workingDir + '/training_sessions')
   
@@ -1311,11 +1308,6 @@ def segment(configFile,workingDir):
     sys.path.append(path)
     cfg = __import__(configFileName)
     softmax_output = cfg.softmax_output
-<<<<<<< HEAD
-    list_subjects_fullSegmentation = cfg.list_subjects_fullSegmentation 
-=======
->>>>>>> 4a47ea40df3219a4cce35bc22a6825ad13ac5dfd
-
     start_epoch = int(cfg.path_to_model.split('.')[-2][cfg.path_to_model.split('.')[-2].find('epoch') + 5 : ]) + 1
         
     os.chdir(workingDir + '/training_sessions/')

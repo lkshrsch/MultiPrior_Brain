@@ -1,3 +1,0 @@
-/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU027/indiTPM.nii
-/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU035/indiTPM.nii
-/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU017/indiTPM.nii

@@ -1,3 +1,0 @@
-/home/hirsch/Documents/projects/stroke_heads/New_Heads/rRP205_MRI_stand.nii
-/home/hirsch/Documents/projects/stroke_heads/New_Heads/rSB206_MRI_stand.nii
-/home/hirsch/Documents/projects/stroke_heads/New_Heads/rSD199_MRI_stand.nii

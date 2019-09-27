@@ -1,3 +1,0 @@
-/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU008/GU008_Avg_for_dixon_big.nii
-/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/GU011/GU011_avg.nii
-/home/hirsch/Documents/projects/stroke_heads/AphasicStrokeTrial/NC033/NC033_T1.nii
