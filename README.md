@@ -4,9 +4,7 @@ Repository for "Tissue segmentation with deep 3D networks and spatial priors" ht
 
 # Quick Tutorial
 
-Overview of files:
-
-# Train a model with data:
+## Train a model with data:
 
 run_Models_stroke.sh  -->  TRAIN_TEST.py 
 
