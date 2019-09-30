@@ -965,6 +965,9 @@ def make_model(model_configFile):
 
 ############################## RUNNING TRAINING AND SEGMENTATION FUNCTIONS ###########################################
 
+#configFile = '/home/hirsch/Documents/projects/brainSegmentation/DeepPriors/configFiles/configFiles_stroke/configFile_Aphasic_Stroke_MultiPriors_noDownsampling.py'
+#workingDir = '/home/hirsch/Documents/projects/brainSegmentation/DeepPriors/'
+
 def train_test_model(configFile, workingDir):
     # import configuration file and create working environment
     print(configFile)
@@ -973,16 +976,13 @@ def train_test_model(configFile, workingDir):
     configFileName = configFile.split('/')[-1][:-3]   
     sys.path.append(path)
     cfg = __import__(configFileName)
-    softmax_output = cfg.softmax_output
-    if not os.path.exists(workingDir + '/training_sessions'):
-	os.mkdir(workingDir + '/training_sessions')
-  
-    if len(cfg.TPM_channel) > 0:
+
+    if len(cfg.TPM_channel.split()) > 0:
       cfg.TPM_channel = workingDir + cfg.TPM_channel
-    if len(cfg.train_TPM_channel) > 0:
+    if len(cfg.train_TPM_channel.split()) > 0:
       cfg.train_TPM_channel = workingDir + cfg.train_TPM_channel
       cfg.TPM_channel = cfg.train_TPM_channel  
-    if len(cfg.validation_TPM_channel) > 0:
+    if len(cfg.validation_TPM_channel.split()) > 0:
       cfg.validation_TPM_channel = workingDir + cfg.validation_TPM_channel
       
     cfg.trainChannels = [workingDir + x for x in cfg.trainChannels]
@@ -1216,7 +1216,7 @@ def train_test_model(configFile, workingDir):
         for subjectIndex in list_subjects_fullSegmentation: 
           time_segmentation = time.time()
           fullHeadSegmentation(wd, cfg.penalty_MATRIX, cfg.validation_TPM_channel, dice_compare, dsc, model, cfg.model, cfg.validationChannels, cfg.validationLabels, subjectIndex, \
-          cfg.output_classes, cfg.segmentation_dpatch, cfg.size_test_minibatches, logfile, epoch,softmax_output, cfg.saveSegmentation)
+          cfg.output_classes, cfg.segmentation_dpatch, cfg.size_test_minibatches, logfile, epoch,cfg.softmax_output, cfg.saveSegmentation)
           print('Segmentation took {}'.format(round(time.time() - time_segmentation, 3)))
           my_logger('--------------- TEST EVALUATION ---------------', logfile)
           my_logger('          Full segmentation evaluation of subject' + str(subjectIndex), logfile)
@@ -1307,7 +1307,9 @@ def segment(configFile,workingDir):
     configFileName = configFile.split('/')[-1][:-3]   
     sys.path.append(path)
     cfg = __import__(configFileName)
-    softmax_output = cfg.softmax_output
+
+    list_subjects_fullSegmentation = cfg.list_subjects_fullSegmentation 
+
     start_epoch = int(cfg.path_to_model.split('.')[-2][cfg.path_to_model.split('.')[-2].find('epoch') + 5 : ]) + 1
         
     os.chdir(workingDir + '/training_sessions/')
@@ -1322,7 +1324,7 @@ def segment(configFile,workingDir):
     
     logfile = 'segmentations.log'
 
-    if len(cfg.TPM_channel) > 0:
+    if len(cfg.TPM_channel.split()) > 0:
       cfg.TPM_channel = workingDir + cfg.TPM_channel
     cfg.segmentChannels = [workingDir + x for x in cfg.segmentChannels]
     if len(cfg.segmentLabels) > 0:
@@ -1416,7 +1418,7 @@ def segment(configFile,workingDir):
       list_subjects_fullSegmentation = range(cfg.test_subjects)
     for subjectIndex in list_subjects_fullSegmentation:        
         fullHeadSegmentation(wd, cfg.penalty_MATRIX, cfg.TPM_channel, dice_compare, dsc, model, cfg.model, cfg.segmentChannels, cfg.segmentLabels, subjectIndex, \
-        cfg.output_classes,cfg.segmentation_dpatch, cfg.size_test_minibatches, logfile, epoch, softmax_output, cfg.saveSegmentation)
+        cfg.output_classes,cfg.segmentation_dpatch, cfg.size_test_minibatches, logfile, epoch, cfg.softmax_output, cfg.saveSegmentation)
         my_logger('--------------- TEST EVALUATION ---------------', logfile)
         my_logger('          Full segmentation evaluation of subject' + str(subjectIndex), logfile)
         if dice_compare: my_logger('DCS ' + str(dsc[-1]),logfile)
