@@ -1095,7 +1095,7 @@ def train_test_model(configFile, workingDir):
     elif cfg.load_model == True:
         from keras.models import load_model  
         if cfg.loss_function == 'Dice6':
-            from multiscale_CNN_TPM import dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
+            from MultiPriors_noDownsampling import dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
             my_custom_objects = {'dice_coef_multilabel6':dice_coef_multilabel6,
                                  'dice_coef_multilabel0':dice_coef_multilabel0,
                                  'dice_coef_multilabel1':dice_coef_multilabel1,
@@ -1105,7 +1105,7 @@ def train_test_model(configFile, workingDir):
                                  'dice_coef_multilabel5':dice_coef_multilabel5}
             #custom_metrics = [dice_coef_multilabel6,dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5]
         elif cfg.loss_function == 'Dice7':
-            from BIG_multiscale_CNN_TPM import Generalised_dice_coef_multilabel7, dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
+            from MultiPriors_noDownsampling import Generalised_dice_coef_multilabel7, dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
             my_custom_objects = {'Generalised_dice_coef_multilabel7':Generalised_dice_coef_multilabel7,
                                  'dice_coef_multilabel0':dice_coef_multilabel0,
                                  'dice_coef_multilabel1':dice_coef_multilabel1,
@@ -1115,7 +1115,7 @@ def train_test_model(configFile, workingDir):
                                  'dice_coef_multilabel5':dice_coef_multilabel5,
                                  'dice_coef_multilabel6':dice_coef_multilabel6}
         elif cfg.loss_function == 'wDice6':
-            from multiscale_CNN_TPM import w_dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
+            from MultiPriors_noDownsampling import w_dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
             my_custom_objects = {'w_dice_coef_multilabel6':w_dice_coef_multilabel6,
                                  'dice_coef_multilabel0':dice_coef_multilabel0,
                                  'dice_coef_multilabel1':dice_coef_multilabel1,
@@ -1124,17 +1124,17 @@ def train_test_model(configFile, workingDir):
                                  'dice_coef_multilabel4':dice_coef_multilabel4,
                                  'dice_coef_multilabel5':dice_coef_multilabel5}
         elif cfg.loss_function == 'Dice2':
-            from multiscale_CNN_TPM import Generalised_dice_coef_multilabel2, dice_coef_multilabel0,dice_coef_multilabel1
+            from MultiPriors_noDownsampling import Generalised_dice_coef_multilabel2, dice_coef_multilabel0,dice_coef_multilabel1
             my_custom_objects = {'Generalised_dice_coef_multilabel2':Generalised_dice_coef_multilabel2,
                                  'dice_coef_multilabel0':dice_coef_multilabel0,
                                  'dice_coef_multilabel1':dice_coef_multilabel1}
         elif cfg.loss_function == 'wDice2':
-            from multiscale_CNN_TPM import w_dice_coef_multilabel2, dice_coef_multilabel0,dice_coef_multilabel1
+            from MultiPriors_noDownsampling import w_dice_coef_multilabel2, dice_coef_multilabel0,dice_coef_multilabel1
             my_custom_objects = {'w_dice_coef_multilabel2':w_dice_coef_multilabel2,
                                  'dice_coef_multilabel0':dice_coef_multilabel0,
                                  'dice_coef_multilabel1':dice_coef_multilabel1} 
         elif cfg.loss_function == 'Multinomial':
-            from multiscale_CNN_TPM import dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5,dice_coef_multilabel6
+            from MultiPriors_noDownsampling import dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5,dice_coef_multilabel6
             my_custom_objects = {'dice_coef_multilabel0':dice_coef_multilabel0,
                                  'dice_coef_multilabel1':dice_coef_multilabel1,
                                  'dice_coef_multilabel2':dice_coef_multilabel2,
@@ -1336,7 +1336,7 @@ def segment(configFile,workingDir):
     from keras.models import load_model   
     if cfg.output_classes == 6:
 	try:
-	    from multiscale_CNN_TPM import Generalised_dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
+	    from MultiPriors_noDownsampling import Generalised_dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
 	    my_custom_objects = {'Generalised_dice_coef_multilabel6':Generalised_dice_coef_multilabel6,
 				     'dice_coef_multilabel0':dice_coef_multilabel0,
 				     'dice_coef_multilabel1':dice_coef_multilabel1,
@@ -1348,7 +1348,7 @@ def segment(configFile,workingDir):
 		#my_custom_objects = dict(zip(np.sort(my_custom_objects.keys()), custom_metrics))
 
 	except:
-	    from multiscale_CNN_TPM import w_dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
+	    from MultiPriors_noDownsampling import w_dice_coef_multilabel6, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5
 	    my_custom_objects = {'w_dice_coef_multilabel6':w_dice_coef_multilabel6,
 					     'dice_coef_multilabel0':dice_coef_multilabel0,
 					     'dice_coef_multilabel1':dice_coef_multilabel1,
@@ -1360,12 +1360,12 @@ def segment(configFile,workingDir):
 
     elif cfg.output_classes == 2:
         try:
-            from multiscale_CNN_TPM import Generalised_dice_coef_multilabel2, dice_coef_multilabel0,dice_coef_multilabel1
+            from MultiPriors_noDownsampling import Generalised_dice_coef_multilabel2, dice_coef_multilabel0,dice_coef_multilabel1
             my_custom_objects = {'Generalised_dice_coef_multilabel2':Generalised_dice_coef_multilabel2,
 				     'dice_coef_multilabel0':dice_coef_multilabel0,
 				     'dice_coef_multilabel1':dice_coef_multilabel1}
         except:
-            from multiscale_CNN_TPM import w_dice_coef_multilabel2, dice_coef_multilabel0,dice_coef_multilabel1
+            from MultiPriors_noDownsampling import w_dice_coef_multilabel2, dice_coef_multilabel0,dice_coef_multilabel1
             my_custom_objects = {'w_dice_coef_multilabel2':w_dice_coef_multilabel2,
 				     'dice_coef_multilabel0':dice_coef_multilabel0,
 				     'dice_coef_multilabel1':dice_coef_multilabel1}
@@ -1373,7 +1373,7 @@ def segment(configFile,workingDir):
 
     elif cfg.output_classes == 7:
         try:
-	    from BIG_multiscale_CNN_TPM import Generalised_dice_coef_multilabel7, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5, dice_coef_multilabel6
+	    from MultiPriors_noDownsampling import Generalised_dice_coef_multilabel7, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5, dice_coef_multilabel6
 	    my_custom_objects = {'Generalised_dice_coef_multilabel7':Generalised_dice_coef_multilabel7,
 				     'dice_coef_multilabel0':dice_coef_multilabel0,
 				     'dice_coef_multilabel1':dice_coef_multilabel1,
@@ -1383,7 +1383,7 @@ def segment(configFile,workingDir):
 				     'dice_coef_multilabel5':dice_coef_multilabel5,
 				     'dice_coef_multilabel6':dice_coef_multilabel6}
 	except:
-	    from multiscale_CNN_TPM import Generalised_dice_coef_multilabel7, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5, dice_coef_multilabel6
+	    from MultiPriors_noDownsampling import Generalised_dice_coef_multilabel7, dice_coef_multilabel0,dice_coef_multilabel1,dice_coef_multilabel2,dice_coef_multilabel3,dice_coef_multilabel4,dice_coef_multilabel5, dice_coef_multilabel6
 	    my_custom_objects = {'Generalised_dice_coef_multilabel7':Generalised_dice_coef_multilabel7,
 				     'dice_coef_multilabel0':dice_coef_multilabel0,
 				     'dice_coef_multilabel1':dice_coef_multilabel1,
