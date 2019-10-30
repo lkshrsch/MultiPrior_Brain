@@ -6,7 +6,7 @@ Repository for "Tissue segmentation with deep 3D networks and spatial priors" ht
 
 ## Train a model with data:
 
->>> python TRAIN_TEST.py --train_configFile
+> python TRAIN_TEST.py --train_configFile
 
 train_configFile specifies:
 - model to train
@@ -15,7 +15,7 @@ train_configFile specifies:
 
 ## Segment data with a trained model:
 
->>> python SEGMENT.py --segment_configFile
+> python SEGMENT.py --segment_configFile
 
 segment_configFile specifies:
 - (trained) model to use
