@@ -21,7 +21,18 @@ segment_configFile specifies:
 - (trained) model to use
 -  data to segment
 
-############ Directory structure ##############
+
+############ Use pre-trained model ###########
+
+> MultiPriors_Keras_Trained_Model.h5
+
+This model was trained on 1mm isotropic brain MRIs on the task of brain-tissue segmentation into 7 classes (background, skin, bone, sinus-cavities, white matter, CSF and gray matter). 
+
+The model outputs a prediction for the center voxel of a volume of size 51x51x51. When given volumes of larger size the model will automatically scale and output simultaneous predictions for the center voxels.
+
+For segmenting a full scan, concatenation of all non-overlapping predicted voxels is required. This is automatically done by function SEGMENT.py when given a proper configuration file.
+
+## Directory structure 
 
 /configFiles       --> Contains all configuration files  for training and segmenting
 
@@ -33,8 +44,7 @@ segment_configFile specifies:
 
 
 
-############ Including Data ##############
-
+## Including Data
 
 To start using in a new environment, one must attach the correct paths to the data in CV_folds. 
 
@@ -44,11 +54,4 @@ Only Input-Data can be placed anywhere else, to be linked on the CV_folds lists.
 
 
 
-############ Use pre-trained model ###########
-
-> MultiPriors_Keras_Trained_Model.h5
-
-This model was trained on 1mm isotropic brain MRIs on the task of brain-tissue segmentation into 7 classes (background, skin, bone, sinus-cavities, white matter, CSF and gray matter). 
-The model outputs a prediction for the center voxel of a volume of size 51x51x51. When given volumes of larger size the model will automatically scale and output simultaneous predictions for the center voxels.
-For segmenting a full scan, concatenation of all non-overlapping predicted voxels is required. This is automatically done by function SEGMENT.py when given a proper configuration file.
 
