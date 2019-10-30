@@ -28,7 +28,7 @@ segment_configFile specifies:
 
 This model was trained on 1mm isotropic brain MRIs on the task of brain-tissue segmentation into 7 classes (background, skin, bone, sinus-cavities, white matter, CSF and gray matter). 
 
-The model outputs a prediction for the center voxel of a volume of size 51x51x51. When given volumes of larger size the model will automatically scale and output simultaneous predictions for the center voxels.
+The model outputs a prediction for the center voxel of a volume of size 51x51x51. When given volumes of larger size the model will automatically scale and output simultaneous predictions for the center voxels. This means it is possible to give a whole scan as input, with a padding of (51,51,51), and the model with output a full scan segmentation in one pass (this will be an expensive forward pass so unless computing resources are available, this is practically unfeasible).
 
 For segmenting a full scan, concatenation of all non-overlapping predicted voxels is required. This is automatically done by function SEGMENT.py when given a proper configuration file.
 
