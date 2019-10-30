@@ -6,23 +6,20 @@ Repository for "Tissue segmentation with deep 3D networks and spatial priors" ht
 
 ## Train a model with data:
 
-run_Models_stroke.sh  -->  TRAIN_TEST.py 
+>>> python TRAIN_TEST.py --train_configFile
 
-TRAIN_TEST.py --train_configFile
+train_configFile specifies:
+- model to train
+- data to use
+- hyperparameters of the training session 
 
-train_configFile:
-- which model to train
-- which data to use
-- hyperparameter of the training session 
+## Segment data with a trained model:
 
+>>> python SEGMENT.py --segment_configFile
 
-run_SEGMENTATION.sh   --> SEGMENT.py
-
-SEGMENT.py --segment_configFile
-
-segment_configFile:
-- Which (trained) model to use
-- Which data to segment
+segment_configFile specifies:
+- (trained) model to use
+-  data to segment
 
 ############ Directory structure ##############
 
