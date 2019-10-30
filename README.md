@@ -27,12 +27,16 @@ segment_configFile:
 ############ Directory structure ##############
 
 /configFiles       --> Contains all configuration files  for training and segmenting
+
 /CV_folds          --> Contain the links to all data called through the configuration files
+
 /scripts           --> Contain library of functions and model definitions
+
 /training_sessions --> a folder for each initiated training session called with TRAIN_TEST.py (run_Models_stroke.sh)
 
 
 
+############ Including Data ##############
 
 
 To start using in a new environment, one must attach the correct paths to the data in CV_folds. 
